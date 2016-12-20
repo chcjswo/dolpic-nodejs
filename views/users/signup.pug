@@ -1,0 +1,22 @@
+extends ../layout/layout-web
+
+block content
+	include ../partials/header-web
+	if errors
+		ul
+			for error in errors
+				li= error.msg
+	<!-- signup -->
+	.login_box
+		p 아이돌, 유명 연예인 SNS 이미지를 한 번에 모아보세요
+		form(action="/users/signup" method="POST" name="form")
+			input(type="text" name="username" placeholder="아이디" value=username)
+			input(type="password" name="password" placeholder="password")
+			input(type="password" name="password2" placeholder="password confirm")
+		.clear
+		.signup_text
+			| 해당 가입 정보는 SNS 이미지<br>
+			| 구독 관리를 위해서만 사용됩니다.
+		.btn_signup 회원가입
+		.signup_text
+			a(href='/users/login' target='_self') 로그인 &gt;&gt;

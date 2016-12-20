@@ -1,0 +1,32 @@
+extends ../layout/layout-admin
+
+block content
+	.panel.panel-info
+		.panel-heading 유저 리스트
+		table.table.table-hover
+			thead
+				tr
+					th 회원 아이디
+					th 카카오 아이디
+					th 페이스북 아이디
+					th 회원 롤
+					th 등록일
+					th 로그인 날짜
+					th 패스워드 변경일
+					th 삭제
+			tbody
+			for user in users
+				tr
+					td 
+						a(href='/dolpic-admin/userFavoriteList/' + page + '/' + user.username) #{user.username}
+					td #{user.kakaoId}
+					td #{user.facebookId}
+					td #{user.userType}
+					td #{moment(user.regDate).format('YYYY-MM-DD HH:mm:SS')}
+					td #{moment(user.lastLoginDate).format('YYYY-MM-DD HH:mm:SS')}
+					td #{moment(user.passwdUpdateDate).format('YYYY-MM-DD HH:mm:SS')}
+					td: button.btn.btn-danger.btn-sm.delete(data-seq=user.id) 삭제
+
+	include ../partials/paging-admin
+	div: br
+	div: br

@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+<head>
+		<meta property="og:title" content="DolPic">
+<meta property="og:type" content="article">
+<meta property="og:image">
+<meta property="og:description" content="아이돌, 유명 연예인 SNS 사진 이미지 모음 | 돌픽 -">
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+		<meta name="description" content="아이돌, 유명 연예인 SNS 사진 이미지 모음 | 돌픽">
+		<meta name="keywords" content="짤빵, 이미지, 아이돌, 유명 연예인, SNS,트위터, 인스타그램, 페이스북">
+		<title>돌픽 | 아이돌, 유명 연예인 SNS 이미지 모음</title>
+		<link rel="shortcut icon" href="http://www.dolpic.kr/favicon.ico" />
+		<link rel="apple-touch-icon" href="http://dolpic.kr/images/icon.png">
+<link rel="stylesheet" type="text/css" href="/Css/common.m.css">
+<script src="https://code.jquery.com/jquery-1.7.2.min.js"></script>
+script.
+		(function (i, s, o, g, r, a, m) {
+				i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+						(i[r].q = i[r].q || []).push(arguments)
+				}, i[r].l = 1 * new Date(); a = s.createElement(o),
+				m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+		})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+		ga('create', 'UA-64356825-1', 'auto');
+		ga('send', 'pageview');
+</head>
+<body>
+<!-- 구글 광고 -->
+<div><br /></div>
+<center>
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle dolPicMoTop"
+| style="display:inline-block"
+| data-ad-client="ca-pub-8262863496694505"
+| data-ad-slot="9028353156"></ins>
+script.
+		(adsbygoogle = window.adsbygoogle || []).push({});
+</center>
+<form id="form1" method="post">    <!-- 회원가입/로그인 -->
+		<div class="login_box">
+			<p>아이돌, 유명 연예인 SNS 이미지를 한 번에 모아보세요.</p>
+				<input id="username" maxlength="12" name="username" placeholder="아이디" type="text" value="" />
+				<input id="password" maxlength="20" name="password" placeholder="패스워드" type="password" />
+				<div class="clear"></div>
+				<div class="btn_signup">회원가입</div>
+				<div class="btn_login">로그인</div>
+		</div>
+<input id="ReferUrl" name="ReferUrl" type="hidden" value="/" /></form>
+script.
+	$(function () {
+			$('.btn_signup').live('click', function () { fnSignUp(); });
+			$('.btn_login').live('click', function () { fnLogIn(); });
+
+			// 웹뷰 통신
+			window.dolpic.navibtn(0, 0, 0);
+	});
+
+	var blank_pattern = /^\s+|\s+$/g;
+	var input_pattern = /^[A-Za-z0-9+]{4,12}$/;
+
+	function fnSignUp() {
+			if ($("#username").val().replace(blank_pattern, "") == "") {
+					alert("아이디를 입력해주세요.");
+					return;
+			}
+
+			if ($("#password").val().replace(blank_pattern, "") == "") {
+					alert("패스워드를 입력해주세요.");
+					return;
+			}
+
+			if (!input_pattern.test($("#username").val())) {
+					alert("아이디는 숫자, 영문으로 4자에서 12자까지 가능합니다.");
+					return;
+			}
+
+			$('#form1').attr('action', '/m/app/signUp');
+			$("#form1").submit();
+	}
+
+	function fnLogIn() {
+			if ($("#username").val().replace(blank_pattern, "") == "") {
+					alert("아이디를 입력해주세요.");
+					return;
+			}
+
+			if ($("#password").val().replace(blank_pattern, "") == "") {
+					alert("패스워드를 입력해주세요.");
+					return;
+			}
+
+			$('#form1').attr('action', '/m/app/logIn');
+			$("#form1").submit();
+	}
+
+	function fnImageDownload() {
+			alert("이미지 보기 화면에서 다운로드가 가능합니다.");
+	}
+</body>
+</html>

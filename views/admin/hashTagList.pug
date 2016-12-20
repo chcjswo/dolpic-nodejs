@@ -1,0 +1,56 @@
+extends ../layout/layout-admin
+
+block content
+	.row
+		.col-xs-1
+			button.btn.btn-info.btn-sm.make(data-toggle='modal' data-target='#hashTagMake') 해쉬태그 만들기
+		.col-xs-1(style='margin-left:20px')
+			button.btn.btn-info.btn-sm.json-make JSON 만들기
+	div: br
+	.row
+		.col-lg-12
+			.panel.panel-info
+				.panel-heading 해쉬 태그 리스트
+				table.table.table-hover
+					thead
+						tr
+							th 고유번호
+							th 트위터 해쉬태그
+							th 인스타 해쉬태그
+							th 초성
+							th 등록일
+							th 수정
+							th 삭제
+					tbody
+					for hashTag in hashTags
+						tr
+							td: a(href='/dolpic-admin/imageList/' + hashTag.id + '/' + page) #{hashTag.id}
+							td #{hashTag.twitterHashTag}
+							td #{hashTag.instagramHashTag}
+							td #{hashTag.initial}
+							td #{moment(hashTag.regDate).format('YYYY-MM-DD HH:mm:SS')}
+							td: button.btn.btn-warning.btn-sm.update(data-seq=hashTag.id) 수정
+							td: button.btn.btn-danger.btn-sm.delete(data-seq=hashTag.id) 삭제
+
+	.modal.fade#hashTagMake(tabindex='-1' role='dialog' aria-labelledby='hashTagModalLabel')
+		.modal-dialog(role='document')
+			.modal-content
+				.modal-header
+					<button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+						<span aria-hidden='true'>&times;</span>
+					</button>
+					h4.modal-title#hashTagModalLabel
+				.modal-body
+					form
+						.form-group
+							input.form-control.twitterHashTag(type='text' placeholder='트위터 태그' required)
+						.form-group
+							input.form-control.instaHashTag(type='text' placeholder='인스타그램 태그 - 입력 선택' required)
+				.modal-footer
+					button.btn.btn-default(data-dismiss='modal') 닫기
+					button.btn.btn-primary.addHashTag 만들어
+
+	include ../partials/paging-admin
+
+	form(method='POST' name='form')
+		input(type='hidden' id='Seq' name='Seq')

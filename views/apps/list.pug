@@ -1,0 +1,32 @@
+extends ../layout/layout-mobile
+
+block content
+	include ../partials/header-mobile
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	<ins class="adsbygoogle dolPicMoTop"
+	|	 style="display:inline-block"
+	|	 data-ad-client="ca-pub-8262863496694505"
+	|	 data-ad-slot="9028353156"
+	|	 ></ins>
+	script.
+		(adsbygoogle = window.adsbygoogle || []).push({});
+	<!-- 갤러리 -->
+	.dp_title
+		strong 최신 DolPic
+	.wrapper
+		.gbox_gallery
+		for image in imageList
+			.gbox(style='background:url(' + image.url + ') center center no-repeat;background-size:cover'
+			data-imageid=image._id data-hashtagid=image.hashTagId._id data-hashtag=image.hashTagId.twitterHashTag data-page=page)
+		.clear
+		include ../partials/paging-web
+		.clear
+	.gbox_side
+		include ../partials/hotDolpic
+		<!-- 구글 광고 -->
+		include ../partials/googleBanner-mobile
+	.clear
+	<!-- 하단 리스트 -->
+	.dolpic_warp
+		.clear
+		include ../partials/footer

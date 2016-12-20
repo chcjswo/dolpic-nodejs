@@ -1,0 +1,15 @@
+extends ../layout/layout-web
+
+block content
+	include ../partials/header-web
+	<!-- 하단 리스트 -->
+	.dolpic_warp
+		.wrapper
+			.search_box
+				input(type='text' name='search' placeholder='검색')
+			.div#loading(align='center')
+				img(src='/images/rolling_list.gif')
+			<!-- 리스트 박스 -->
+			#mylist
+			.clear
+		include ../partials/footer

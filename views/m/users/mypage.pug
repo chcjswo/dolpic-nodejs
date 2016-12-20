@@ -1,0 +1,21 @@
+extends ../../layout/layout-mobile
+
+block content
+	<!-- 상단바 -->
+	.tbar
+		.wrapper
+			h1
+				a(href='/')
+					img(src='/images/logo.png' width='18' height='18')
+					| DolPic
+			.btn_subscription(title='구독 관리')
+	include ../../partials/searchBar
+		<!-- 하단 리스트 -->
+		.dolpic_warp
+			.wrapper
+				<!-- 리스트 박스 -->
+				#mylist
+				.clear
+		.logout
+			a(href='/users/logout') 로그아웃
+		include ../../partials/footer

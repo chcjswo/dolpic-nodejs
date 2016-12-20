@@ -1,0 +1,39 @@
+{
+  "name": "dolpic-web-nodejs",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/dolpic",
+    "test": "istanbul cover tape \"test/*-test.js\"",
+    "lint": "eslint app.js",
+    "ci-test": "istanbul cover tape \"test/*-test.js\" > test.tap && istanbul report clover",
+    "ci-lint": "eslint -f checkstyle app.js > checkstyle-result.xml"
+  },
+  "dependencies": {
+    "async": "^2.1.2",
+    "bcryptjs": "^2.3.0",
+    "body-parser": "~1.15.1",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.2.0",
+    "express": "~4.13.4",
+    "express-messages": "^1.0.1",
+    "express-session": "^1.14.0",
+    "express-validator": "^2.20.8",
+    "moment": "^2.14.1",
+    "mongodb": "^2.2.5",
+    "mongoose": "^4.5.7",
+    "mongoose-paginate": "^5.0.0",
+    "mongoose-transaction": "0.0.3",
+    "morgan": "~1.7.0",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
+    "pug": "^2.0.0-beta4",
+    "serve-favicon": "~2.3.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.11.1",
+    "istanbul": "^0.4.5",
+    "tape": "^4.6.3"
+  }
+}

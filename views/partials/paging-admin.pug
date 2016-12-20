@@ -1,0 +1,24 @@
+<!-- 페이징 -->
+// 첫페이지 / 블럭페이지 계산
+- var startPage = blockPage = parseInt((page - 1) / gotoPageLimit) * gotoPageLimit + 1;
+nav
+	ul.pagination.pagination-lg
+		if (blockPage != 1)
+			li
+				a(href=pageUrl + (blockPage - gotoPageLimit) aria-label='Previous')
+					span(aria-hidden='true') &laquo;
+		- var loopCcount = 1;
+		while (startPage <= pages && loopCcount <= gotoPageLimit)
+			if (startPage == page)
+				li.active: a= blockPage
+			else
+				li: a(href=pageUrl + blockPage)= blockPage
+
+			- startPage++;
+			- loopCcount++;
+			- blockPage++;
+
+		if (blockPage <= pages)
+			li
+				a(href=blockPage aria-label='Next')
+					span(aria-hidden='true') &raquo;

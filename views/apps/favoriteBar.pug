@@ -1,0 +1,51 @@
+<!-- 즐겨찾기 -->
+<div class="fbar">
+    <div class="fbar_wrap">
+            <span class="tbox on"><strong>즐겨찾기</strong> 로그인 후 사용가능</span>
+        <span class="tbox"><a href="/App/Main" class="tbox_a">최신 업로드 이미지</a></span>
+        <span class="flist">
+        </span>
+        <div class="clear"></div>
+        <div class="btn_more">▼ 즐겨찾기 펼치기</div>
+    </div>
+</div>
+
+script.
+    var bExec = false;
+
+    function fnFavoriteDelete(seq) {
+        if ("" == "") {
+            alert("로그인후 사용 가능합니다.");
+            return;
+        }
+
+        if (bExec) {
+            alert("요청을 처리중입니다.잠시만 기다려주세요.");
+            return;
+        }
+
+        bExec = true;
+
+        $.ajax({
+            url: "/Pics/FavoriteDelete",
+            type: "POST",
+            dataType: "json",
+            data: {
+                "TagNo": seq
+            }
+        })
+        .done(function (data) {
+            var retData = $.parseJSON(data);
+            if (retData.RetCode == 0) {
+                $(".fbar" + seq).remove();
+                $(".in" + seq).text('+');
+            } else {
+                alert(retData.RetMsg);
+            }
+            bExec = false;
+        })
+        .fail(function () {
+            alert("실행중 에러가 발생했습니다.");
+            bExec = false;
+        });
+    }

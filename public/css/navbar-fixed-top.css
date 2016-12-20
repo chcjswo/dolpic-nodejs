@@ -1,0 +1,12 @@
+body {
+  /*min-height: 2000px;*/
+  padding-top: 50px;
+}
+.jumbotron {
+  padding:20px 0 50px 0;
+  margin-bottom:70px;
+}
+
+th, td {
+  text-align: center;
+}

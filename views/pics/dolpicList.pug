@@ -1,0 +1,35 @@
+extends ../layout/layout-web
+
+block content
+	include ../partials/header-web
+	<!-- 갤러리 -->
+	.wrapper
+		.gbox_gallery
+			.dp_title
+				strong= hashTag
+				span.tbox(data-hashtagid=hashTagId) 구독 신청
+			for image in imageList
+				- var classType = (image.urlType == 1 ? 'gbox_thumb g_t_twitter' : 'gbox_thumb g_t_instagram')
+				.gbox(style='background:url(' + image.url + ') center center no-repeat;background-size:cover'
+				data-imageid=image._id data-hashtagid=image.hashTagId._id data-hashtag=hashTag data-page=page)
+					div(class=classType)
+						.gbox_t_title: | @#{hashTag}
+						.gbox_t_text
+							img(src='/images/icon_like.png' height='9' alt='like')
+							| #{image.likeCount}
+			.clear
+			include ../partials/paging-web
+			<!-- 구글 광고 -->
+			include ../partials/googleBanner-web-1
+		.gbox_side
+			include ../partials/hotDolpic
+			<!-- 구글 광고 -->
+			include ../partials/googleBanner-web-2
+			<!-- 공지사항 -->
+			include ../partials/twitter-web
+		.clear
+		<!-- 하단 리스트 -->
+		.dolpic_warp
+			include ../partials/initialsList
+			.clear
+			include ../partials/footer

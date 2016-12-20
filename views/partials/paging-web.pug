@@ -1,0 +1,23 @@
+<!-- 갤러리 네비게이션 -->
+// 첫페이지 / 블럭페이지 계산
+- var startPage = blockPage = parseInt((page - 1) / gotoPageLimit) * gotoPageLimit + 1;
+ul.gbox_list
+	if (blockPage != 1)
+		li(data-gotourl=pageUrl + (blockPage - gotoPageLimit))
+			span &laquo;&nbsp;
+	- var loopCcount = 1;
+	while (startPage <= pages && loopCcount <= gotoPageLimit)
+		if (startPage == page)
+			li.on: a= blockPage
+			| &nbsp;
+		else
+			li(data-gotourl=pageUrl + blockPage)= blockPage
+			| &nbsp;
+
+		- startPage++;
+		- loopCcount++;
+		- blockPage++;
+
+	if (blockPage <= pages)
+		li(data-gotourl=blockPage)
+			span &raquo;

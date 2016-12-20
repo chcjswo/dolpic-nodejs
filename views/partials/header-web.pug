@@ -1,0 +1,15 @@
+a(name='top')
+<!-- 상단바 -->
+.tbar
+	.wrapper
+		h1
+			a(href='/')
+				img(src='/images/logo.png' width='20' height='20')
+				|  DolPic
+		ul
+			li: a(href='#') 검색
+			if (user)
+				li: a(href='/users/mypage') 구독관리
+				li: a(href='/users/logout') 로그아웃
+			else
+				li: a(href='/users/login') 로그인

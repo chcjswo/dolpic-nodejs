@@ -1,0 +1,32 @@
+extends ../layout/layout-admin
+
+block content
+	.panel.panel-info
+		.panel-heading 이미지 리스트
+		table.table.table-hover
+			thead
+				tr
+					th 이미지
+					th 원본 사이트
+					th 좋아요
+					//th 신고
+					th 화면등록
+					th 등록일
+					th 삭제
+			tbody
+			for image in images
+				tr
+					td: a(href=image.url target='_blank') #{image.url}
+					td #{image.urlType}
+					td #{image.likeCount}
+					//td #{image.imagesReport.length}
+					td #{image.isView}
+					td #{moment(image.regDate).format('YYYY-MM-DD HH:mm:SS')}
+					td: button.btn.btn-danger.btn-sm.delete(data-seq=image.id) 삭제
+
+	include ../partials/paging-admin
+
+	div: button.btn.btn-primary.listpage(data-page=1) 해쉬태그 리스트
+	div: br
+	div: br
+	input(type="hidden" name="infoMessage" value=messages())

@@ -1,0 +1,73 @@
+extends ../layout/layout-web
+
+block content
+	include ../partials/header-web
+	<!-- 갤러리 -->
+	.wrapper
+		.gbox_gallery
+			.dp_title
+				strong= hashTag
+				span.tbox(data-hashtagid=hashTagId) 구독 신청
+			.vbox
+				.div(align='center')
+					img(src='/images/facebook.gif')
+				.like_box(style='display:none')
+				img(src=dolpicImage.url)
+				.wrong_pic
+					| 해당 이미지가 잘못되었으면 &nbsp;
+					a(href="#" onclick='fnImageReport();') 여기
+					| 를 눌러주세요. 출처:Twitter
+			.clear
+			<!-- 갤러리 네비게이션 -->
+			ul.gbox_list
+				li 메인
+				| &nbsp;
+				li < 이전
+				| &nbsp;
+				li.on(style='cursor:pointer') #{hashTag}
+				| &nbsp;
+				li 다음 >
+				| &nbsp;
+			if (user)
+				- var isLike = false
+				for like in dolpicImage.imageLike
+					if (String(user._id) === String(like.userId))
+						- isLike = true
+
+				if (isLike)
+					.btn_good.on 좋아요
+				else
+					.btn_good(onclick='fnImageLike();') 좋아요
+			else
+				.btn_good(onclick='fnImageLike();') 좋아요
+
+			.clear
+
+			.vbox_stitle
+				img(src='/images/icon_like_b.png' width='30' height='20')
+				| #{hashTag} 추천 이미지
+			.gbox_recommend
+				.div(align='center')
+					img(src='/images/facebook.gif')
+			.clear
+			input(type='hidden' value=hashTag name='hashTag')
+			input(type='hidden' value=hashTagId name='hashTagId')
+			input(type='hidden' value=page name='page')
+			input(type='hidden' value=imageId name='imageId')
+			<!-- 구글 광고 -->
+			include ../partials/googleBanner-web-1
+			<!-- Disqus -->
+			include ../partials/disqusComment
+		.gbox_side
+			include ../partials/hotDolpic
+			<!-- 구글 광고 -->
+			include ../partials/googleBanner-web-2
+			<!-- 공지사항 -->
+			include ../partials/twitter-web
+		.clear
+
+	<!-- 하단 리스트 -->
+	.dolpic_warp
+		include ../partials/initialsList
+		.clear
+		include ../partials/footer

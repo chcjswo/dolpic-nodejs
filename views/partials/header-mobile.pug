@@ -1,0 +1,13 @@
+a(name='top')
+<!-- 상단바 -->
+.tbar
+	.wrapper
+		h1
+			a(href='/')
+				img(src='/images/logo.png' width='20' height='20')
+				|  DolPic
+
+		if (user)
+			div.btn_logout(title='로그인' onclick="location.href='/users/logout';")
+		else
+			div.btn_login(title='로그인' onclick="location.href='/users/login';")

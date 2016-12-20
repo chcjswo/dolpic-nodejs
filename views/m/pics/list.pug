@@ -1,0 +1,21 @@
+extends ../../layout/layout-mobile
+
+block content
+	include ../../partials/header-mobile
+	include ../../partials/searchBar
+	<!-- 갤러리 -->
+	.dolpiclist
+		.div(align='center')
+			img(src='/images/rolling_thumb.gif')
+
+	.gbox_side
+		include ../../partials/hotDolpic
+		<!-- 구글 광고 -->
+		include ../../partials/googleBanner-mobile
+	.clear
+
+	<!-- 하단 리스트 -->
+	.dolpic_warp
+		include ../../partials/initialsList
+		.clear
+		include ../../partials/footer

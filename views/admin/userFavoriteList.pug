@@ -1,0 +1,26 @@
+extends ../layout/layout-admin
+
+block content
+	.panel.panel-info
+		.panel-heading 즐겨찾기 리스트
+		table.table.table-hover
+			thead
+				tr
+					th 태그 이름
+					th 초성
+					th 등록일
+			tbody
+			for tag in users.favoriteHashTag
+				tr
+					td #{tag.hashTagName}
+					td #{tag.initial}
+					td #{moment(user.regDate).format('YYYY-MM-DD HH:mm:SS')}
+	div: br
+	div: br
+	div: br
+	div: button.btn.btn-primary.listpage 회원 리스트
+
+	script.
+		$('.listpage').on('click', function () {
+			location.href='/dolpic-admin/usersList/' + #{page};
+		})
