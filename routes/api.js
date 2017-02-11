@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var fs = require('fs');
 
 var DolPicImage = require('../models/DolPicImage');
 var HashTag = require('../models/HashTag');
@@ -299,6 +300,25 @@ router.post('/imageReport', function(req, res) {
 			});
 		}
 	});
+});
+
+
+router.post('/jsonToMongodb', function(req, res) {
+	var text = fs.readFileSync('./public/json/dolpic.json', 'utf8');
+	var jsonData = JSON.parse(text);
+
+	for (var i=0; i<jsonData.length; i++) {
+		var hashTag = HashTag({
+			twitterHashTag   	: jsonData[i].twitterHashTag,
+			instagramHashTag  : jsonData[i].instagramHashTag
+		});
+
+		HashTag.addHashTag(hashTag, function(error, result) {
+
+		});
+	}
+
+	return res.json(text);
 });
 
 
