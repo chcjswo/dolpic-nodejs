@@ -1,4 +1,7 @@
 $(document).ready(function() {
+	$('.vbox').on('doubletap', function() {
+		fnImageLike();
+	});
 });
 function fnResize() {
 	var gboxDefault = ($('.gbox_gallery').width() - 24) / 3;
@@ -38,10 +41,6 @@ function fnResize() {
 	$('.btn_more').on('click',function() {
 		$('.fbar_wrap').removeClass('more');
 		$('.btn_more').hide();
-	});
-
-	$('.vbox').on('doubletap', function() {
-		$('.like_box').fadeIn('swing').delay(200).fadeOut('fast');
 	});
 
 	// 화면 전환시 새로고침

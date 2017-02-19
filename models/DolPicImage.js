@@ -155,3 +155,11 @@ module.exports.addImageReport = function(data, callback) {
     callback
   );
 }
+
+
+module.exports.checkImageLike = function(query, callback) {
+  DolPicImage
+    .findOne(query)
+    .select('_id')
+    .exec(callback);
+}

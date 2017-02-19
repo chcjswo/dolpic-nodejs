@@ -43,20 +43,48 @@ passport.use(new LocalStrategy(
 
 
 router.get('/login', function(req, res) {
+	var returnUrl = req.param('returnUrl');
 	res.render('m/users/login',
 		{
 			title     : title,
+			returnUrl	: returnUrl,
 			javascript: '/js/common/login.js'
 		}
 	);
 });
 
 
-router.post('/login', passport.authenticate('local', {
-	failureRedirect: '/users/login',
-	failureFlash   : true
-}), function(req, res) {
-	return res.redirect('/');
+// router.post('/login', passport.authenticate('local', {
+// 	failureRedirect: '/users/login',
+// 	failureFlash   : true
+// }), function(req, res) {
+// 	var returnUrl = req.body.returnUrl;
+// 	return res.redirect(returnUrl == '' ? '/' : encodeURI(returnUrl));
+// });
+
+
+router.post('/login', function(req, res, next) {
+	passport.authenticate('local', function(err, user, info) {
+		if ( err ) {
+			next(err);
+			return
+		}
+		var returnUrl = encodeURI(req.body.returnUrl);
+		// User does not exist
+		if ( ! user ) {
+			req.flash('error', info.message);
+			return res.redirect('/users/login?returnUrl=' + returnUrl);
+		}
+		req.logIn(user, function(err) {
+			// Invalid password
+			if ( err ) {
+				req.flash('error', info.message);
+				next(err);
+				return
+			}
+			return res.redirect(returnUrl == '' ? '/' : returnUrl);
+		});
+	})(req, res, next);
 });
 
 

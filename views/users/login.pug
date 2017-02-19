@@ -12,6 +12,7 @@ block content
 		form(action="/users/login" method="POST" name="form")
 			input(type="text" name="username" placeholder="아이디")
 			input(type="password" name="password" placeholder="password")
+			input(type="hidden" name="returnUrl" value=returnUrl)
 		.clear
 		.btn_login 로그인
 		.signup_text
