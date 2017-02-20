@@ -6,6 +6,7 @@ var DolPicImage = require('../models/DolPicImage');
 var HashTag = require('../models/HashTag');
 var User = require("../models/User");
 
+const loginMessage = "로그인 후 이용가능합니다.";
 
 router.post('/dolpicImages', function(req, res) {
 	var hashTagId = req.body.hashTagId;
@@ -86,7 +87,7 @@ router.post('/addSubscribe', function(req, res) {
 		return res.json({message: errors.msg});
 	}
 	if (!req.isAuthenticated()) {
-		return res.json({message: "로그인후 사용 가능합니다."});
+		return res.json({message: loginMessage});
 	}
 	var query = {
 		$and: [
@@ -160,7 +161,7 @@ router.delete('/mypage', function(req, res) {
 
 router.post('/addImageLike', function(req, res) {
 	if (!req.isAuthenticated()) {
-		return res.json({message: '로그인을 해야 가능 합니다.', code: 1});
+		return res.json({message: loginMessage, code: 1});
 	}
 	var data = {
 		userId   : req.user._id,
@@ -169,14 +170,31 @@ router.post('/addImageLike', function(req, res) {
 		imageId  : req.body.imageId
 	};
 
-	DolPicImage.addImageLike(data, function(error, result) {
-		if (error) throw error;
-	});
-	HashTag.addImageLike(data, function(error, result) {
-		if (error) throw error;
-	});
+	var query = {
+		$and: [
+			{_id: req.body.imageId},
+			{imageLike: {$elemMatch: {userId: req.user._id}}}
+		]
+	};
 
-	return res.json({message: '좋아요.', code: 0});
+	DolPicImage.checkImageLike(query, function(error, checkResult) {
+		if (error) throw error;
+		if (checkResult) {
+			return res.json({message: '이미 좋아요를 하셨습니다.', code: 9});
+		} else {
+
+			DolPicImage.addImageLike(data, function(error, result) {
+				if (error) throw error;
+				console.log(result);
+			});
+			HashTag.addImageLike(data, function(error, result) {
+				if (error) throw error;
+				console.log(result);
+			});
+
+			return res.json({message: '좋아요.', code: 0});
+		}
+	});
 });
 
 
@@ -274,7 +292,7 @@ router.post('/listNew', function(req, res) {
 
 router.post('/imageReport', function(req, res) {
 	if (!req.isAuthenticated()) {
-		return res.json({message: '로그인을 해야 가능 합니다.', code: 1});
+		return res.json({message: loginMessage, code: 1});
 	}
 	var data = {
 		userId   : req.user._id,

@@ -11,7 +11,7 @@ $(function () {
   $('.vbox div:eq(0)').hide();
 	$('.tbox').on('click', function () {
    fnAddSubscribe($(this).data('hashtagid'));
- });
+ 	});
 });
 
 function fnShowRecommendImageList() {
@@ -76,8 +76,11 @@ function fnImageLike() {
   .done(function (data) {
     if (data.code == 1) {
       alert(data.message);
-      location.href='/users/login';
-    } else {
+      location.href='/users/login?returnUrl=' + $(location).attr('pathname');
+    } else if (data.code == 9) {
+			alert(data.message);
+			return;
+		} else {
       $('.like_box').fadeIn('swing').delay(200).fadeOut('fast');
       $('.btn_good').addClass('on');
       $('.btn_good').attr('onclick', '').unbind('click');

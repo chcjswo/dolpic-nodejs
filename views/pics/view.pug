@@ -28,8 +28,8 @@ block content
 				| &nbsp;
 				li 다음 >
 				| &nbsp;
+			- var isLike = false
 			if (user)
-				- var isLike = false
 				for like in dolpicImage.imageLike
 					if (String(user._id) === String(like.userId))
 						- isLike = true
@@ -38,6 +38,8 @@ block content
 					.btn_good.on 좋아요
 				else
 					.btn_good(onclick='fnImageLike();') 좋아요
+
+				input(type='hidden' value=isLike name='isLike')
 			else
 				.btn_good(onclick='fnImageLike();') 좋아요
 
