@@ -8,13 +8,13 @@ block content
 			.dp_title
 				strong 최신 DolPic
 			for image in imageList
-				- var classType = (image.urlType == 1 ? 'gbox_thumb g_t_twitter' : 'gbox_thumb g_t_instagram')
-				//- var hashtag = (image.urlType == 1 ? image.HashTagId.twitterHashTag : image.HashTagId.instagramHashTag)
+				- var classType = (image.urlType === 1 ? 'gbox_thumb g_t_twitter' : 'gbox_thumb g_t_instagram')
+				- var hashtag = (image.urlType === 1 ? image.hashTagId.twitterHashTag : image.hashTagId.instagramHashTag)
 				.gbox(style='background:url(' + image.url + ') center center no-repeat;background-size:cover'
-				data-imageid=image._id data-hashtagid=image.hashTagId data-hashtag=image.hashTagId.twitterHashTag
-				data-page=page)
+				data-imageid=image._id data-hashtagid=image.hashTagId._id data-hashtag=hashtag
+				data-page=page data-urlType=image.urlType)
 					.div(class=classType)
-						.gbox_t_title: | @#{image.hashTagId.twitterHashTag}
+						.gbox_t_title: | @#{hashtag}
 						.gbox_t_text
 							img(src='/images/icon_like.png' height='9' alt='like')
 							| #{image.likeCount}
