@@ -340,6 +340,15 @@ router.post('/jsonToMongodb', function(req, res) {
 });
 
 
+/* 모든 해쉬태그들 조회 */
+router.post('/allHashTags', function(req, res) {
+	HashTag.getAllHashTags(function(error, hashTag) {
+		if (error) throw error;
+		return res.json(hashTag);
+	});
+});
+
+
 function random(low, high) {
 	return Math.random() * (high - low) + low;
 }

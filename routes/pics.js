@@ -118,7 +118,7 @@ router.get('/newList/:page?', function(req, res) {
 	var options = {
 		select  : 'url urlType likeCount hashTagId',
 		sort    : {regDate: -1},
-		populate: [{path: 'hashTagId', select: "twitterHashTag subscriberCount"}],
+		populate: [{path: 'hashTagId', select: "twitterHashTag instagramHashTag subscriberCount"}],
 		lean    : true,
 		page    : page,
 		limit   : pageLimitCount
