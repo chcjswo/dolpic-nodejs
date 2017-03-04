@@ -231,13 +231,13 @@ router.delete('/hashTagDelete', function(req, res) {
 					};
 				} else {
 					resultJson = {
-						message: "삭제에 성공 했습니다. <br/>JSON파일을 꼭!! 다시 만들어 주세요.",
+						message: "삭제에 성공 했습니다.",
 						code   : 0
 					};
 				}
 			});
 			resultJson = {
-				message: "삭제에 성공 했습니다.<br/>JSON파일을 꼭!! 다시 만들어 주세요.",
+				message: "삭제에 성공 했습니다.",
 				code   : 0
 			};
 		}
