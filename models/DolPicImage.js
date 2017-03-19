@@ -19,6 +19,10 @@ var dolpicImageSchema = schema({
     type: Boolean,
     default: true
   },
+  caption:{
+    type: String,
+    unique: true
+  },
   regDate:{
     type: Date,
     default: Date.now

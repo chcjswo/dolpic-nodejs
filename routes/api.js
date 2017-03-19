@@ -12,6 +12,7 @@ router.post('/dolpicImages', function(req, res) {
 	var hashTagId = req.body.hashTagId;
 	var urlType = req.body.urlType;
 	var url = req.body.imageUrl;
+	var caption = req.body.caption;
 
 	// url Base64 Decode
 	var buffer = new Buffer(url, 'base64');
@@ -20,7 +21,8 @@ router.post('/dolpicImages', function(req, res) {
 	var query = {
 		hashTagId: hashTagId,
 		urlType  : urlType,
-		url      : toDecodeUrl
+		url      : toDecodeUrl,
+		caption  : caption // caption은 base64디코딩 하지 않고 그냥 입력
 	};
 
 	// 이미지가 있는지 조회
