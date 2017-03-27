@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+  - "6"
+services:
+  - mongodb
+cache:
+   directories:
+     - node_modules
+env:
+  - NODE_ENV=production
+before_install:
+  - npm install mocha -g
+install:
+  - npm install
+script:
+  - node ./bin/dolpic
