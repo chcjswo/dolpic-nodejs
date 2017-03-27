@@ -1,4 +1,5 @@
 var express = require('express');
+var helmet = require('helmet');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -7,23 +8,10 @@ var session = require('express-session');
 var flash = require('connect-flash');
 var bodyParser = require('body-parser');
 var expressValidator = require('express-validator');
-var util = require('util');
-
-var mongo = require('mongodb');
 var mongoose = require('mongoose');
-
 var passport = require('passport');
-var LocalStrategy = require('passport-local'),Strategy;
 
-// OS 환경 변수 사용하기
-// var dbInfo = util.format('mongodb://%s:%s@%s:%s/%s',
-// 												process.env['DB_USER'],
-// 												process.env['DB_PASS'],
-// 												process.env['DB_HOST'],
-// 												process.env['DB_PORT'],
-// 												process.env['DB_DEFAULT']);
-//
-// console.log(dbInfo);
+
 // MongoDB 데이터베이스 접속하기
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/dolpic');
@@ -49,9 +37,11 @@ var app = express();
 
 app.locals.moment = require('moment');
 
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
+
 
 // uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -61,6 +51,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(errorHandler);
+app.use(helmet());
 
 
 // Express Session
