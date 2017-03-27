@@ -5,10 +5,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./bin/dolpic"
-    //"test": "istanbul cover tape \"test/*-test.js\"",
-    //"lint": "eslint app.js",
-    //"ci-test": "istanbul cover tape \"test/*-test.js\" > test.tap && istanbul report clover",
-    //"ci-lint": "eslint -f checkstyle app.js > checkstyle-result.xml"
   },
   "dependencies": {
     "async": "^2.1.2",
