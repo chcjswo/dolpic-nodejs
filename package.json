@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/dolpic",
-    "test": "istanbul cover tape \"test/*-test.js\"",
-    "lint": "eslint app.js",
-    "ci-test": "istanbul cover tape \"test/*-test.js\" > test.tap && istanbul report clover",
-    "ci-lint": "eslint -f checkstyle app.js > checkstyle-result.xml"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./bin/dolpic"
+    //"test": "istanbul cover tape \"test/*-test.js\"",
+    //"lint": "eslint app.js",
+    //"ci-test": "istanbul cover tape \"test/*-test.js\" > test.tap && istanbul report clover",
+    //"ci-lint": "eslint -f checkstyle app.js > checkstyle-result.xml"
   },
   "dependencies": {
     "async": "^2.1.2",
@@ -39,5 +40,6 @@
     "should": "^11.2.1",
     "supertest": "^3.0.0",
     "tape": "^4.6.3"
-  }
+  },
+  "author": "chcjswo"
 }
