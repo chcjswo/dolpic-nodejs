@@ -10,5 +10,6 @@ cache:
 env:
   - NODE_ENV=production
 before_install:
-  - npm install
   - npm install mocha -g
+notifications:
+  slack: mocadevs:0GFPHOOopFep911ZGvAq2eyV
