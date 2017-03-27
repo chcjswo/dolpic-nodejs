@@ -12,5 +12,3 @@ env:
 before_install:
   - npm install
   - npm install mocha -g
-script:
-  - npm test
