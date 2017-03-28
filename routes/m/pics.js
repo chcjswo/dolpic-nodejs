@@ -1,28 +1,28 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
-var DolPicImage = require('../../models/DolPicImage');
-var HashTag = require('../../models/HashTag');
+const DolPicImage = require('../../models/DolPicImage');
+const HashTag = require('../../models/HashTag');
 
-var title = '돌픽 | 아이돌, 유명 연예인 SNS 이미지 모음';
+const title = '돌픽 | 아이돌, 유명 연예인 SNS 이미지 모음';
 
 // 바로가기에 보여줄 카운트
-var gotoPageLimit = 5;
+const gotoPageLimit = 5;
 
 
 router.get('/list/:hashTag/:hashTagId/:page?', function(req, res) {
-	var hashTag = req.params.hashTag;
-	var hashTagId = req.params.hashTagId;
-	var page = req.params.page || 1;
-	var pageLimitCount = 40;
+	const hashTag = req.params.hashTag;
+	const hashTagId = req.params.hashTagId;
+	const page = req.params.page || 1;
+	const pageLimitCount = 40;
 
 	if (hashTagId === 'undefined') return;
 
-	var query = {
+	const query = {
 		'hashTagId': hashTagId,
 		'isView'   : true
 	};
-	var options = {
+	const options = {
 		select  : 'url urlType likeCount hashTagId',
 		sort    : {regDate: -1},
 		populate: [{path: 'hashTagId', select: "twitterHashTag subscriberCount"}],
@@ -54,11 +54,11 @@ router.get('/list/:hashTag/:hashTagId/:page?', function(req, res) {
 
 
 router.get('/list/:page?', function(req, res) {
-	var page = req.params.page || 1;
-	var pageLimitCount = 40;
+	const page = req.params.page || 1;
+	const pageLimitCount = 40;
 
-	var query = {'isView': true};
-	var options = {
+	const query = {'isView': true};
+	const options = {
 		select  : 'url urlType likeCount hashTagId',
 		sort    : {regDate: -1},
 		populate: [{path: 'hashTagId', select: "twitterHashTag subscriberCount"}],
@@ -88,19 +88,19 @@ router.get('/list/:page?', function(req, res) {
 
 
 router.get('/search/:hashTag', function(req, res) {
-	var hashTag = req.params.hashTag;
-	var pageLimitCount = 40;
-	var query = {'twitterHashTag': hashTag};
+	const hashTag = req.params.hashTag;
+	const pageLimitCount = 40;
+	let query = {'twitterHashTag': hashTag};
 
 	HashTag.getHashTagIdByHasTag(query, function(error, result) {
 		if (error) throw error;
 
-		var hashTagId = '582aa8912b1eb829e9d293d1';
+		let hashTagId = '582aa8912b1eb829e9d293d1';
 		if (result)
 			hashTagId = result._id;
 
 		query = {'hashTagId': hashTagId, 'isView': true};
-		var options = {
+		const options = {
 			select  : 'url urlType likeCount hashTagId',
 			sort    : {regDate: -1},
 			populate: [{path: 'hashTagId', select: "twitterHashTag subscriberCount"}],
@@ -132,10 +132,10 @@ router.get('/search/:hashTag', function(req, res) {
 
 
 router.get('/view/:hashTag/:hashTagId/:imageId/:page', function(req, res) {
-	var hashTag = req.params.hashTag;
-	var hashTagId = req.params.hashTagId;
-	var imageId = req.params.imageId;
-	var page = req.params.page;
+	const hashTag = req.params.hashTag;
+	const hashTagId = req.params.hashTagId;
+	const imageId = req.params.imageId;
+	const page = req.params.page;
 
 	DolPicImage.getImage({_id: imageId}, function(error, image) {
 		if (error) throw error;
@@ -156,11 +156,11 @@ router.get('/view/:hashTag/:hashTagId/:imageId/:page', function(req, res) {
 
 
 router.get('/newList/:page?', function(req, res) {
-	var page = req.params.page || 1;
-	var pageLimitCount = 40;
+	const page = req.params.page || 1;
+	const pageLimitCount = 40;
 
-	var query = {'isView': true};
-	var options = {
+	const query = {'isView': true};
+	const options = {
 		select  : 'url urlType likeCount hashTagId',
 		sort    : {regDate: -1},
 		populate: [{path: 'hashTagId', select: "twitterHashTag instagramHashTag subscriberCount"}],
