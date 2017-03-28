@@ -1,24 +1,24 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
 
-var User = require('../models/User');
+const User = require('../models/User');
 
-var DolPicImage = require('../models/DolPicImage');
+const DolPicImage = require('../models/DolPicImage');
 
-var title = '돌픽 | 아이돌, 유명 연예인 SNS 이미지 모음';
+const title = '돌픽 | 아이돌, 유명 연예인 SNS 이미지 모음';
 
 // 바로가기에 보여줄 카운트
-var gotoPageLimit = 5;
+const gotoPageLimit = 5;
 
 router.get('/main/:page?', function(req, res) {
-	var page = req.params.page || 1;
-	var pageLimitCount = 40;
+	const page = req.params.page || 1;
+	const pageLimitCount = 40;
 
-	var query = {'isView': true};
-	var options = {
+	const query = {'isView': true};
+	const options = {
 		select  : 'url urlType likeCount hashTagId',
 		sort    : {regDate: -1},
 		populate: [{path: 'hashTagId', select: "twitterHashTag subscriberCount"}],
@@ -48,31 +48,31 @@ router.get('/main/:page?', function(req, res) {
 
 
 router.get('/bookmarkList/:hashTag/:page?', function(req, res) {
-	var hashTag = req.params.hashTag;
-	var page = req.params.page || 1;
+	const hashTag = req.params.hashTag;
+	const page = req.params.page || 1;
 });
 
 
 router.get('/favoriteBar/:hashTag', function(req, res) {
-	var hashTag = req.params.hashTag;
+	const hashTag = req.params.hashTag;
 });
 
 
 router.get('/picView/:imageId/:hashTag/:page', function(req, res) {
-	var hashTag = req.params.hashTag;
-	var page = req.params.page || 1;
+	const hashTag = req.params.hashTag;
+	const page = req.params.page || 1;
 });
 
 
 router.get('/bookmarkPicView/:imageId/:hashTag/:page', function(req, res) {
-	var hashTag = req.params.hashTag;
-	var page = req.params.page || 1;
+	const hashTag = req.params.hashTag;
+	const page = req.params.page || 1;
 });
 
 
 router.get('/initialList', function(req, res) {
-	var hashTag = req.params.hashTag;
-	var page = req.params.page || 1;
+	const hashTag = req.params.hashTag;
+	const page = req.params.page || 1;
 });
 
 
@@ -101,8 +101,8 @@ router.post('/login', passport.authenticate('local', {
 
 
 router.post('/signUp', function(req, res) {
-	var userId = req.body.UserId;
-	var userPwd = req.body.UserPwd;
+	const userId = req.body.UserId;
+	const userPwd = req.body.UserPwd;
 
 	return res.render('apps/logIn',
 		{
@@ -112,8 +112,8 @@ router.post('/signUp', function(req, res) {
 
 
 router.get('/recommPicList/:imageId/:hashTag/:page', function(req, res) {
-	var hashTag = req.params.hashTag;
-	var page = req.params.page || 1;
+	const hashTag = req.params.hashTag;
+	const page = req.params.page || 1;
 });
 
 
@@ -148,11 +148,6 @@ passport.use(new LocalStrategy(
 		});
 	}
 ));
-
-
-
-
-
 
 
 module.exports = router;

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "test": "mocha --timeout 5000",
+    "test": "mocha",
     "start": "node ./bin/dolpic"
   },
   "dependencies": {

@@ -43,7 +43,7 @@ passport.use(new LocalStrategy(
 
 
 router.get('/login', function(req, res) {
-	var returnUrl = req.query.returnUrl;
+	const returnUrl = req.query.returnUrl;
 	return res.render('users/login',
 		{
 			title     : title,
