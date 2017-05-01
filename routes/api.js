@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const fs = require('fs');
+const Slack = require('slack-node');
 
 const DolPicImage = require('../models/DolPicImage');
 const HashTag = require('../models/HashTag');
 const User = require("../models/User");
 
+const webhookUri = "https://hooks.slack.com/services/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";
 const loginMessage = "로그인 후 이용가능합니다.";
 
 router.post('/dolpicImages', function(req, res) {
@@ -346,6 +348,22 @@ router.post('/allHashTags', function(req, res) {
 	HashTag.getAllHashTags(function(error, hashTag) {
 		if (error) throw error;
 		return res.json(hashTag);
+	});
+});
+
+/**
+ * @function 이미지 업로드후 슬랙 메시지 보내기
+ */
+router.post('/slack-notify', (req, res) => {
+	const slack = new Slack();
+	slack.setWebhook(webhookUri);
+
+	slack.webhook({
+	  channel: "#build",
+	  username: "dolpic-crawler",
+	  text: "이미지 크롤링 완료!!  수고했다~~"
+	}, function(err, response) {
+	  console.log(response);
 	});
 });
 
