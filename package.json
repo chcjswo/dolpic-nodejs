@@ -1,13 +1,10 @@
 {
   "name": "dolpic-web-nodejs",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/dolpic",
-    "test": "istanbul cover tape \"test/*-test.js\"",
-    "lint": "eslint app.js",
-    "ci-test": "istanbul cover tape \"test/*-test.js\" > test.tap && istanbul report clover",
-    "ci-lint": "eslint -f checkstyle app.js > checkstyle-result.xml"
+    "test": "mocha",
+    "start": "node ./bin/dolpic"
   },
   "dependencies": {
     "async": "^2.1.2",
@@ -20,6 +17,7 @@
     "express-messages": "^1.0.1",
     "express-session": "^1.14.0",
     "express-validator": "^2.20.8",
+    "helmet": "^3.5.0",
     "moment": "^2.14.1",
     "mongodb": "^2.2.5",
     "mongoose": "^4.5.7",
@@ -29,11 +27,17 @@
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "pug": "^2.0.0-beta4",
-    "serve-favicon": "~2.3.0"
+    "serve-favicon": "~2.3.0",
+    "slack-node": "^0.1.8"
   },
   "devDependencies": {
     "eslint": "^3.11.1",
     "istanbul": "^0.4.5",
+    "mocha": "^3.2.0",
+    "mockery": "^2.0.0",
+    "should": "^11.2.1",
+    "supertest": "^3.0.0",
     "tape": "^4.6.3"
-  }
+  },
+  "author": "chcjswo"
 }

@@ -1,57 +1,47 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var session = require('express-session');
-var flash = require('connect-flash');
-var bodyParser = require('body-parser');
-var expressValidator = require('express-validator');
-var util = require('util');
+const express = require('express');
+const helmet = require('helmet');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const flash = require('connect-flash');
+const bodyParser = require('body-parser');
+const expressValidator = require('express-validator');
+const mongoose = require('mongoose');
+const passport = require('passport');
 
-var mongo = require('mongodb');
-var mongoose = require('mongoose');
 
-var passport = require('passport');
-var LocalStrategy = require('passport-local'),Strategy;
-
-// OS 환경 변수 사용하기
-// var dbInfo = util.format('mongodb://%s:%s@%s:%s/%s',
-// 												process.env['DB_USER'],
-// 												process.env['DB_PASS'],
-// 												process.env['DB_HOST'],
-// 												process.env['DB_PORT'],
-// 												process.env['DB_DEFAULT']);
-//
-// console.log(dbInfo);
 // MongoDB 데이터베이스 접속하기
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/dolpic');
-var db = mongoose.connection;
+const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'Connection error: '));
 db.once('open', function callback () {
 	console.log('Successfully connected to MongoDB');
 });
 
 // routes 설정
-var admin = require('./routes/admin');
-var apps = require('./routes/apps');
-var index = require('./routes/index');
-var users = require('./routes/users');
-var pics = require('./routes/pics');
-var api = require('./routes/api');
+const admin = require('./routes/admin');
+const apps = require('./routes/apps');
+const index = require('./routes/index');
+const users = require('./routes/users');
+const pics = require('./routes/pics');
+const api = require('./routes/api');
 
 // 모바일 접속
-var mPics = require('./routes/m/pics');
-var mUsers = require('./routes/m/users');
+const mPics = require('./routes/m/pics');
+const mUsers = require('./routes/m/users');
 
-var app = express();
+const app = express();
 
 app.locals.moment = require('moment');
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
+
 
 // uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -61,6 +51,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(errorHandler);
+app.use(helmet());
 
 
 // Express Session
@@ -77,7 +68,7 @@ app.use(passport.session());
 // Express Validator
 app.use(expressValidator({
 	errorFormatter: function(param, msg, value) {
-		var namespace = param.split('.')
+		let namespace = param.split('.')
 		, root    = namespace.shift()
 		, formParam = root;
 
@@ -116,7 +107,7 @@ app.get('*', function(req, res, next) {
 
 // 어드민 페이지 middleware
 app.get('/dolpic-admin/*', function(req, res, next) {
-	if (!req.isAuthenticated() || res.locals.userType != 1) {
+	if (!req.isAuthenticated() || res.locals.userType !== 1) {
 		req.flash('success','어드민으로 로그인 해주세요.');
 		res.redirect('/users/login');
 	} else {
@@ -134,10 +125,10 @@ app.use('/dolpic-admin', admin);
 app.use('/m/app', apps);
 app.use('/m/pics', mPics);
 app.use('/m/users', mUsers);
-	
+
 // catch 404 and forward to error handler
 app.use(function(req, res) {
-	return res.render('errors/404');
+	return res.status(404).render('errors/404');
 });
 
 // error handlers
@@ -169,8 +160,7 @@ function errorHandler(err, req, res, next) {
   if (res.headersSent) {
     return next(err);
   }
-  res.status(500);
-  res.render('errors/error', { error: err });
+  res.status(500).render('errors/error', { error: err });
 }
 
 

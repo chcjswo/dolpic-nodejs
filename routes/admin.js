@@ -1,16 +1,16 @@
-var express = require('express');
-var router = express.Router();
-var fs = require('fs');
+const express = require('express');
+const router = express.Router();
+const fs = require('fs');
 
-var User = require('../models/User');
-var HashTag = require('../models/HashTag');
-var Image = require('../models/DolPicImage');
+const User = require('../models/User');
+const HashTag = require('../models/HashTag');
+const Image = require('../models/DolPicImage');
 
-var title = '돌픽 - 어드민';
+const title = '돌픽 - 어드민';
 // 한페이지에 보여줄 ROW 카운트
-var pageLimitCount = 2000;
+const pageLimitCount = 2000;
 // 바로가기에 보여줄 카운트
-var gotoPageLimit = 20;
+const gotoPageLimit = 20;
 
 
 // 어드민 메뉴 리스트
@@ -30,8 +30,8 @@ router.get('/admin-index', function(req, res) {
 
 // 해쉬태그 리스트
 router.get('/hashTagList/:page?', function(req, res) {
-	var page = req.params.page || 1;
-	var query = '{}';
+	const page = req.params.page || 1;
+	let query = '{}';
 
 	HashTag.getHashTags(query, page, pageLimitCount, function(error, result) {
 		if (error) throw error;
@@ -60,12 +60,11 @@ router.get('/hashTagList/:page?', function(req, res) {
 
 // 해당 해쉬태그 이미지 리스트
 router.get('/imageList/:hashTagId/:page', function(req, res) {
-	var page = req.params.page || 1;
-	var hashTagId = req.params.hashTagId;
-	var query = {
+	const page = req.params.page || 1;
+	const hashTagId = req.params.hashTagId;
+	const query = {
 		hashTagId: hashTagId
 	};
-
 
 	Image.getImages(query, page, pageLimitCount, function(error, result) {
 		if (error) throw error;
@@ -93,8 +92,8 @@ router.get('/imageList/:hashTagId/:page', function(req, res) {
 
 // 이미지 삭제
 router.delete('/image', function(req, res) {
-	var imageId = req.body.imageId;
-	var resultJson = {};
+	const imageId = req.body.imageId;
+	let resultJson = {};
 	Image.deleteImage({_id: imageId}, function(error, image) {
 		if (error) {
 			resultJson = {
@@ -126,17 +125,17 @@ router.get('/hashTagMake', function(req, res) {
 
 // 해쉬태그 만들기
 router.post('/hashTagMake', function(req, res) {
-	var hashTag = HashTag({
+	const hashTag = HashTag({
 		initial         : req.body.initial,
 		twitterHashTag  : req.body.twitterHashTag,
 		instagramHashTag: req.body.instaHashTag
 	});
 
 	HashTag.addHashTag(hashTag, function(error, HashTag) {
-		var resultJson = {};
+		let resultJson = {};
 		if (error) {
 			// 중복 코드
-			if (error.code == 11000) {
+			if (error.code === 11000) {
 				resultJson = {
 					message: "이미 등록된 해쉬코드 입니다.",
 					code   : error.code
@@ -160,7 +159,7 @@ router.post('/hashTagMake', function(req, res) {
 
 // 해쉬태그 수정 폼
 router.get('/hashTagUpdate/:hashTagId', function(req, res) {
-	var hashTagId = req.params.hashTagId;
+	const hashTagId = req.params.hashTagId;
 
 	HashTag.getHashTagById(hashTagId, function(error, hashTag) {
 		return res.render('admin/hashTagUpdateForm',
@@ -177,18 +176,18 @@ router.get('/hashTagUpdate/:hashTagId', function(req, res) {
 
 // 해쉬태그 수정 하기
 router.put('/hashTagUpdate', function(req, res) {
-	var hashTagId = req.body.hashTagSeq;
-	var hashTag = {
+	const hashTagId = req.body.hashTagSeq;
+	const hashTag = {
 		initial         : req.body.initial,
 		twitterHashTag  : req.body.twitterHashTag,
 		instagramHashTag: req.body.instaHashTag
 	};
 
 	HashTag.updateHashTag(hashTagId, hashTag, function(error, hashTag) {
-		var resultJson = {};
+		let resultJson = {};
 		if (error) {
 			// 중복 코드
-			if (error.code == 11000) {
+			if (error.code === 11000) {
 				resultJson = {
 					message: "이미 등록된 해쉬코드 입니다.",
 					code   : error.code
@@ -212,8 +211,8 @@ router.put('/hashTagUpdate', function(req, res) {
 
 // 해쉬태그 삭제 하기
 router.delete('/hashTagDelete', function(req, res) {
-	var hashTagId = req.body.hashTagSeq;
-	var resultJson = {};
+	const hashTagId = req.body.hashTagSeq;
+	let resultJson = {};
 
 	HashTag.deleteHashTag(hashTagId, function(error, hashTag) {
 		if (error) {
@@ -248,7 +247,7 @@ router.delete('/hashTagDelete', function(req, res) {
 
 // JSON 만들기
 router.post('/makeHashTagToJson', function(req, res) {
-	var resultJson = {};
+	let resultJson = {};
 
 	HashTag.getAllHashTags(function(error, hashTag) {
 		if (error) throw error;
@@ -271,8 +270,8 @@ router.post('/makeHashTagToJson', function(req, res) {
 
 // 유저 리스트 조회
 router.get('/usersList/:page?', function(req, res) {
-	var page = req.params.page || 1;
-	var query = '{}';
+	const page = req.params.page || 1;
+	let query = '{}';
 
 	User.getUsers(query, page, pageLimitCount, function(error, result) {
 		if (error) throw error;
@@ -301,8 +300,8 @@ router.get('/usersList/:page?', function(req, res) {
 
 // 회원 즐겨찾기 목록 조회
 router.get('/userFavoriteList/:page/:username', function(req, res) {
-	var page = req.params.page;
-	var username = req.params.username;
+	const page = req.params.page;
+	const username = req.params.username;
 
 	User.getFavoriteHashTag(username, function(error, users) {
 		if (error) throw error;
@@ -324,8 +323,8 @@ router.get('/userFavoriteList/:page/:username', function(req, res) {
 
 // 회원 삭제
 router.delete('/user', function(req, res) {
-	var username = req.body.username;
-	var resultJson = {};
+	const username = req.body.username;
+	let resultJson = {};
 	User.deleteUser(username, function(error, user) {
 		if (error) {
 			resultJson = {

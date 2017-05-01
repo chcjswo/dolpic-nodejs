@@ -1,35 +1,39 @@
-var express = require('express');
-var router = express.Router();
-var fs = require('fs');
+const express = require('express');
+const router = express.Router();
+const fs = require('fs');
+const Slack = require('slack-node');
 
-var DolPicImage = require('../models/DolPicImage');
-var HashTag = require('../models/HashTag');
-var User = require("../models/User");
+const DolPicImage = require('../models/DolPicImage');
+const HashTag = require('../models/HashTag');
+const User = require("../models/User");
 
+const webhookUri = "https://hooks.slack.com/services/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";
 const loginMessage = "로그인 후 이용가능합니다.";
 
 router.post('/dolpicImages', function(req, res) {
-	var hashTagId = req.body.hashTagId;
-	var urlType = req.body.urlType;
-	var url = req.body.imageUrl;
+	const hashTagId = req.body.hashTagId;
+	const urlType = req.body.urlType;
+	const url = req.body.imageUrl;
+	const caption = req.body.caption;
 
 	// url Base64 Decode
-	var buffer = new Buffer(url, 'base64');
-	var toDecodeUrl = buffer.toString('ascii');
+	const buffer = new Buffer(url, 'base64');
+	const toDecodeUrl = buffer.toString('ascii');
 
-	var query = {
+	const query = {
 		hashTagId: hashTagId,
 		urlType  : urlType,
-		url      : toDecodeUrl
+		url      : toDecodeUrl,
+		caption  : caption // caption은 base64디코딩 하지 않고 그냥 입력
 	};
 
 	// 이미지가 있는지 조회
 	DolPicImage.getImage(query, function(error, dolpicImage) {
-		var resultJson = {};
+		let resultJson = {};
 		if (error) throw error;
 		// 이미지가 없으면 입력
 		if (!dolpicImage) {
-			var newwDolpicImage = DolPicImage(query);
+			const newwDolpicImage = DolPicImage(query);
 
 			DolPicImage.addImage(newwDolpicImage, function(error, result) {
 				if (error) {
@@ -64,7 +68,7 @@ router.post('/dolpicImages', function(req, res) {
 router.post('/initials', function(req, res) {
 	HashTag.getHashTags({}, 1, 1000, function(error, result) {
 		if (error) throw error;
-		var userId = '';
+		let userId = '';
 		if (req.isAuthenticated()) userId = req.user._id;
 		return res.json({'result': result.docs, 'userId': userId});
 	});
@@ -79,7 +83,7 @@ router.post('/hotdolpics', function(req, res) {
 });
 
 router.post('/addSubscribe', function(req, res) {
-	var hashTagId = req.body.hashTagId;
+	const hashTagId = req.body.hashTagId;
 	req.checkBody('hashTagId', '잘 못된 접근입니다.').notEmpty();
 	errors = req.validationErrors();
 
@@ -89,7 +93,7 @@ router.post('/addSubscribe', function(req, res) {
 	if (!req.isAuthenticated()) {
 		return res.json({message: loginMessage});
 	}
-	var query = {
+	const query = {
 		$and: [
 			{_id: req.user._id},
 			{subscribeHashTag: {$elemMatch: {hashTagId: hashTagId}}}
@@ -117,8 +121,8 @@ router.post('/mypage', function(req, res) {
 	if (!req.isAuthenticated()) {
 		return res.redirect('/users/login');
 	}
-	var hashTag = req.body.hashTag;
-	var query = {};
+	const hashTag = req.body.hashTag;
+	let query = {};
 
 	if (hashTag) {
 		query = {
@@ -144,7 +148,7 @@ router.delete('/mypage', function(req, res) {
 	if (!req.isAuthenticated()) {
 		return res.redirect('/users/login');
 	}
-	var data = {
+	const data = {
 		userId   : req.user._id,
 		hashTagId: req.body.hashTagId
 	}
@@ -163,14 +167,14 @@ router.post('/addImageLike', function(req, res) {
 	if (!req.isAuthenticated()) {
 		return res.json({message: loginMessage, code: 1});
 	}
-	var data = {
+	const data = {
 		userId   : req.user._id,
 		hashTag  : req.body.hashTag,
 		hashTagId: req.body.hashTagId,
 		imageId  : req.body.imageId
 	};
 
-	var query = {
+	const query = {
 		$and: [
 			{_id: req.body.imageId},
 			{imageLike: {$elemMatch: {userId: req.user._id}}}
@@ -199,12 +203,12 @@ router.post('/addImageLike', function(req, res) {
 
 
 router.post('/recommendImages', function(req, res) {
-	var hashTagId = req.body.hashTagId;
-	var query = {
+	const hashTagId = req.body.hashTagId;
+	const query = {
 		'hashTagId': hashTagId,
 		'isView'   : true
 	};
-	var options = {
+	const options = {
 		select  : 'url urlType likeCount hashTagId',
 		sort    : {likeCount: -1, regDate: -1},
 		populate: [{path: 'hashTagId', select: "twitterHashTag subscriberCount"}],
@@ -219,15 +223,15 @@ router.post('/recommendImages', function(req, res) {
 
 
 router.post('/getImagePrev', function(req, res) {
-	var query = {
+	const query = {
 		'hashTagId': req.body.hashTagId,
 		'_id'      : {'$gt': req.body.imageId}
 	};
 
 	DolPicImage.getPrevImage(query, function(error, result) {
 		if (error) throw error;
-		var prev = 'null';
-		if (result != null) {
+		let prev = 'null';
+		if (result !== null) {
 			prev = result._id;
 		}
 		return res.json({'prev': prev});
@@ -236,15 +240,15 @@ router.post('/getImagePrev', function(req, res) {
 
 
 router.post('/getImageNext', function(req, res) {
-	var query = {
+	const query = {
 		'hashTagId': req.body.hashTagId,
 		'_id'      : {'$lt': req.body.imageId}
 	};
 
 	DolPicImage.getNextImage(query, function(error, result) {
 		if (error) throw error;
-		var next = 'null';
-		if (result != null) {
+		let next = 'null';
+		if (result !== null) {
 			next = result._id;
 		}
 		return res.json({'next': next});
@@ -261,16 +265,16 @@ router.post('/getImageNext', function(req, res) {
 	// getUserName( saveUserInDatabase );
 });
 
-var randomIndex = 140;
+const randomIndex = 140;
 
 router.post('/list', function(req, res) {
 	HashTag.getHashTagId(random(1, randomIndex), function(error, data) {
 		if (error) throw error;
-		var hashTagId;
+		let hashTagId;
 		if (data) {
 			hashTagId = data._id;
 		}
-		var query = {
+		const query = {
 			'hashTagId': hashTagId,
 			'isView'   : true
 		};
@@ -294,13 +298,13 @@ router.post('/imageReport', function(req, res) {
 	if (!req.isAuthenticated()) {
 		return res.json({message: loginMessage, code: 1});
 	}
-	var data = {
+	const data = {
 		userId   : req.user._id,
 		hashTag  : req.body.hashTag,
 		hashTagId: req.body.hashTagId,
 		imageId  : req.body.imageId
 	};
-	var query = {
+	const query = {
 		$and: [
 			{_id: req.body.imageId},
 			{imageReport: {$elemMatch: {userId: req.user._id}}}
@@ -322,17 +326,16 @@ router.post('/imageReport', function(req, res) {
 
 
 router.post('/jsonToMongodb', function(req, res) {
-	var text = fs.readFileSync('./public/json/dolpic.json', 'utf8');
-	var jsonData = JSON.parse(text);
+	const text = fs.readFileSync('./public/json/dolpic.json', 'utf8');
+	const jsonData = JSON.parse(text);
 
-	for (var i=0; i<jsonData.length; i++) {
-		var hashTag = HashTag({
+	for (let i=0; i<jsonData.length; i++) {
+		let hashTag = HashTag({
 			twitterHashTag   	: jsonData[i].twitterHashTag,
 			instagramHashTag  : jsonData[i].instagramHashTag
 		});
 
 		HashTag.addHashTag(hashTag, function(error, result) {
-
 		});
 	}
 
@@ -345,6 +348,22 @@ router.post('/allHashTags', function(req, res) {
 	HashTag.getAllHashTags(function(error, hashTag) {
 		if (error) throw error;
 		return res.json(hashTag);
+	});
+});
+
+/**
+ * @function 이미지 업로드후 슬랙 메시지 보내기
+ */
+router.post('/slack-notify', (req, res) => {
+	const slack = new Slack();
+	slack.setWebhook(webhookUri);
+
+	slack.webhook({
+	  channel: "#build",
+	  username: "dolpic-crawler",
+	  text: "이미지 크롤링 완료!!  수고했다~~"
+	}, function(err, response) {
+	  console.log(response);
 	});
 });
 

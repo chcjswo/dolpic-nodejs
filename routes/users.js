@@ -1,12 +1,12 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
 
-var User = require('../models/User');
+const User = require('../models/User');
 
-var title = '돌픽 | 아이돌, 유명 연예인 SNS 이미지 모음';
+const title = '돌픽 | 아이돌, 유명 연예인 SNS 이미지 모음';
 
 
 passport.serializeUser(function(user, done) {
@@ -43,7 +43,7 @@ passport.use(new LocalStrategy(
 
 
 router.get('/login', function(req, res) {
-	var returnUrl = req.query.returnUrl;
+	const returnUrl = req.query.returnUrl;
 	return res.render('users/login',
 		{
 			title     : title,
@@ -69,7 +69,7 @@ router.post('/login', function(req, res, next) {
             next(err);
             return
         }
-				var returnUrl = encodeURI(req.body.returnUrl);
+				const returnUrl = encodeURI(req.body.returnUrl);
         // User does not exist
         if ( ! user ) {
             req.flash('error', info.message);
@@ -82,7 +82,7 @@ router.post('/login', function(req, res, next) {
                 next(err);
                 return
             }
-            return res.redirect(returnUrl == '' ? '/' : returnUrl);
+            return res.redirect(returnUrl === '' ? '/' : returnUrl);
         });
     })(req, res, next);
 });
@@ -98,9 +98,9 @@ router.get('/signup', function(req, res) {
 
 
 router.post('/signup', function(req, res) {
-	var username = req.body.username;
-	var password = req.body.password;
-	var password2 = req.body.password2;
+	const username = req.body.username;
+	const password = req.body.password;
+	const password2 = req.body.password2;
 
 	req.checkBody('username', '아이디가 입력되지 않았습니다.').notEmpty();
 	req.checkBody('password', '비밀번호가 입력되지 않았습니다.').notEmpty();
@@ -120,17 +120,17 @@ router.post('/signup', function(req, res) {
 		);
 	}
 
-	var newUser = new User({
+	const newUser = new User({
 		username: username,
 		password: password
 	});
 
 	User.addUser(newUser, function(error, user) {
-		var message;
+		let message;
 
 		if (error) {
 			// 중복 유저
-			if (error.code == 11000) {
+			if (error.code === 11000) {
 				message = '이미 등록된 아이디 입니다.';
 			} else {
 				message = '등록에 실패 했습니다.';

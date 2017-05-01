@@ -1,0 +1,11 @@
+language: node_js
+sudo: required
+node_js:
+  - "6"
+services:
+  - mongodb
+cache:
+   directories:
+     - node_modules
+notifications:
+  slack: mocadevs:0GFPHOOopFep911ZGvAq2eyV
