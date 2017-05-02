@@ -361,10 +361,14 @@ router.post('/slack-notify', (req, res) => {
 	slack.webhook({
 	  channel: "#build",
 	  username: "dolpic-crawler",
-	  text: "이미지 크롤링 완료!!  수고했다~~"
+	  text: "이미지 크롤링 완료!!  고생 많이 했음~~"
 	}, function(err, response) {
 	  console.log(response);
+	  return res.json(
+	  	{status: response.status}
+	  );
 	});
+
 });
 
 
