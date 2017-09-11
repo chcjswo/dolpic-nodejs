@@ -341,17 +341,17 @@ router.post('/allHashTags', function(req, res) {
 	});
 });
 
+
 /**
  * @function 이미지 업로드후 슬랙 메시지 보내기
  */
 router.post('/slack-notify', (req, res) => {
 	const time = req.body.time;
-	console.log('time === ', time);
 	const slack = new Slack();
 	slack.setWebhook(webhookUri);
 
 	slack.webhook({
-		channel : '#build',
+		channel : '#dolpic',
 		username: 'dolpic-crawler',
 		text    : '이미지 크롤링 완료!! 총 ' + time + '초 걸림 고생 많이 했음~~'
 	}, function(err, response) {
@@ -360,7 +360,6 @@ router.post('/slack-notify', (req, res) => {
 	  	{status: response.status}
 	  );
 	});
-
 });
 
 
