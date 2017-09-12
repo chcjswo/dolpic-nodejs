@@ -351,7 +351,7 @@ router.post('/slack-notify', (req, res) => {
 	slack.setWebhook(webhookUri);
 
 	slack.webhook({
-		channel : '#dolpic',
+		channel : '#build',
 		username: 'dolpic-crawler',
 		text    : '이미지 크롤링 완료!! 총 ' + time + '초 걸림 고생 많이 했음~~'
 	}, function(err, response) {
