@@ -1,4 +1,4 @@
-﻿var LoadingBar = {
+﻿const LoadingBar = {
   none: function () {
     $("#divLoadingBar").hide();
   },
@@ -31,7 +31,7 @@ $(function () {
       fnHideLoadingBar();
   });
 });
-var dialog;
+let dialog;
 function fnShowLoadingBar() {
   //LoadingBar.block();
   dialog = bootbox.dialog({
@@ -55,18 +55,14 @@ $(window).load(function() {
 });
 
 function fnValidUrl(str) {
-  var pattern = new RegExp('^(http|https|market)\://?' + // 프로토콜
+  const pattern = new RegExp('^(http|https|market)\://?' + // 프로토콜
   '((([a-z\d](([a-z\d-]*[a-z\d])|([ㄱ-힣]))*)\.)+[a-z]{2,}|' + // 도메인명 <-이부분만 수정됨
   '((\\d{1,3}\\.){3}\\d{1,3}))' + // 아이피
   '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // 포트번호
   '(\\?[;&a-z\\d%_.~+=-]*)?' + // 쿼리스트링
   '(\\#[-a-z\\d_]*)?$', 'i'); // 해쉬테그들
 
-  if (!pattern.test(str)) {
-      return false;
-  } else {
-      return true;
-  }
+  return pattern.test(str);
 }
 
 /**
