@@ -13,15 +13,14 @@ const passport = require('passport');
 
 
 // MongoDB 데이터베이스 접속하기
-/*
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://mongodb/dolpic');
+mongoose.connect('mongodb://localhost/dolpic');
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'Connection error: '));
 db.once('open', function callback () {
 	console.log('Successfully connected to MongoDB');
 });
-*/
+
 // routes 설정
 const admin = require('./routes/admin');
 const apps = require('./routes/apps');
